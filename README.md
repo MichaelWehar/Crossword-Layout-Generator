@@ -1,2 +1,8 @@
-# Crossword-Layout-Generator
-Crossword Layout Generator - Open Source CLG
+# Crossword Layout Generator - Open Source CLG
+
+# License
+- MIT
+
+# Credits
+- Michael Wehar
+- Itay Livni
