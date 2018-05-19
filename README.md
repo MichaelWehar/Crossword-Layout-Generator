@@ -1,4 +1,4 @@
-# Crossword Layout Generator - Open Source CLG
+# Crossword Layout Generator - Open Source
 
 # License
 - MIT
