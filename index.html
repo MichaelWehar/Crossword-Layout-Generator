@@ -1,0 +1,55 @@
+<html>
+<head>
+	<title>Crossword Layout Generator</title>
+	<meta name="description" content="An open source crossword layout generator.">
+    <meta name="author" content="Michael Wehar">
+	<script src="layout_generator.js"></script>
+</head>
+
+<body>
+
+	<center>
+		<br>
+		<h1>Crossword Layout Generator</h1>
+		<h3>Enter a list of words below.</h3><br>
+	
+		<textarea id="words" rows="9" cols="35"></textarea><br><br><br>
+		<button onclick="button_clicked();">Generate Layout</button><br><br><br>
+		
+		<div id="content" style="width: 500px; font-family: 'Courier New', Courier, monospace"></div><br>
+		<h3>Visit us @ <a href="https://github.com/MichaelWehar/Crossword-Layout-Generator">GitHub</a></h3><br><br>
+	</center>
+
+	<script>
+	
+		function convert_to_json(word_list){
+			var json_data = [];
+			for(i in word_list){
+				if(word_list[i].length > 0){
+					json_data[i] = {"answer": word_list[i]};
+				}
+			}
+			
+			return json_data;
+		}
+		
+		function button_clicked(){
+			// Input data
+			var word_list = document.getElementById("words").value.replace(/[ \r\n,;:]+/g, ",").split(",");
+			var input_json = convert_to_json(word_list);
+			
+			// Output data
+			var layout = generateLayout(input_json);
+			var output_json = layout.result;
+			var output_html = layout.table_string;
+			
+			// Display result
+			document.getElementById("content").innerHTML = "<b>Output JSON</b><br><br>" + JSON.stringify(output_json) + "<br><br><b>Output Html</b><br><br>" + output_html;
+		}
+		
+	</script>
+	
+	<br><br>
+	
+</body>
+</html>
