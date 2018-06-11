@@ -22,31 +22,13 @@ Here is an example output:
 
 One can visualize the ouput as follows:
 
-```
-i------s--
-
-n-computer
-
-t------a--
-
-equipment-
-
-r---o--d--
-
-f---r--a--
-
-a---t--r--
-
-c------d--
-
-e---------
-```
+![Example Output](https://github.com/MichaelWehar/Crossword-Layout-Generator/blob/master/example_images/crossword1_filled.png)
 
 # Getting Started
 
 **Step 1:** Add the following line to the head of your html document:
 
-`<script src="js/layout_generator.js"></script>`
+`<script src="layout_generator.js"></script>`
 
 **Step 2:** In the body of your html document, you can add the following JavaScript:
 
