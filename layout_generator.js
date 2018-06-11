@@ -1,4 +1,5 @@
-// Credits: Michael Wehar & Itay Livni
+// Author: Michael Wehar
+// Additional credits: Itay Livni
 // MIT License
 
 // Math functions
