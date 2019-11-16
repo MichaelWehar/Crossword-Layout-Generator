@@ -27,14 +27,14 @@ function computeScore1(connections, word){
 }
 
 function computeScore2(rows, cols, i, j){
-	return 1 - (distance(rows/2, cols/2, i, j) / (rows/2 + cols/2));
+	return 1 - (distance(rows / 2, cols / 2, i, j) / ((rows / 2) + (cols / 2)));
 }
 
 function computeScore3(a, b, verticalCount, totalCount){
-	if(verticalCount > totalCount/2){
+	if(verticalCount > totalCount / 2){
 		return a;
 	}
-	else if(verticalCount < totalCount/2){
+	else if(verticalCount < totalCount / 2){
 		return b;
 	}
 	else{
@@ -64,19 +64,20 @@ function addWord(best, words, table, positions){
 		words[index].position = positions[tempStr];
 	}
 	else{
+    // Object.keys is supported in ES5-compatible environments
 		positions[tempStr] = Object.keys(positions).length + 1;
 		words[index].position = positions[tempStr];
 	}
 		
 	if(bestO == 0){
 		for(var k = 0; k < word.length; k++){
-			table[bestI][bestJ+k] = word.charAt(k);
+			table[bestI][bestJ + k] = word.charAt(k);
 		}
 		words[index].orientation = "across";
 	}
 	else{
 		for(var k = 0; k < word.length; k++){
-			table[bestI+k][bestJ] = word.charAt(k);
+			table[bestI + k][bestJ] = word.charAt(k);
 		}
 		words[index].orientation = "down";
 	}
@@ -98,13 +99,13 @@ function computeDimension(words, factor){
 // Table functions
 function initTable(rows, cols){
 	var table = [];
-	for(var x = 0; x < rows; x++){
-		for(var y = 0; y < cols; y++){
-			if(y == 0){
-				table[x] = ["-"];
+	for(var i = 0; i < rows; i++){
+		for(var j = 0; j < cols; j++){
+			if(j == 0){
+				table[i] = ["-"];
 			}
 			else{
-				table[x][y] = "-";
+				table[i][j] = "-";
 			}
 		}
 	}
@@ -116,16 +117,16 @@ function isConflict(table, isVertical, character, i, j){
 	if(character != table[i][j] && table[i][j] != "-"){
 		return true;
 	}
-	else if(table[i][j] == "-" && !isVertical && (i+1) in table && table[i+1][j] != "-"){
+	else if(table[i][j] == "-" && !isVertical && (i + 1) in table && table[i + 1][j] != "-"){
 		return true;
 	}
-	else if(table[i][j] == "-" && !isVertical && (i-1) in table && table[i-1][j] != "-"){
+	else if(table[i][j] == "-" && !isVertical && (i - 1) in table && table[i - 1][j] != "-"){
 		return true;
 	}
-	else if(table[i][j] == "-" && isVertical && (j+1) in table[i] && table[i][j+1] != "-"){
+	else if(table[i][j] == "-" && isVertical && (j + 1) in table[i] && table[i][j + 1] != "-"){
 		return true;
 	}
-	else if(table[i][j] == "-" && isVertical && (j-1) in table[i] && table[i][j-1] != "-"){
+	else if(table[i][j] == "-" && isVertical && (j - 1) in table[i] && table[i][j - 1] != "-"){
 		return true
 	}
 		
@@ -147,11 +148,11 @@ function attemptToInsert(rows, cols, table, weights, verticalCount, totalCount, 
 			var prevFlag = false;
 			
 			for(var k = 0; k < word.length; k++){
-				if(isConflict(table, false, word.charAt(k), i, j+k)){
+				if(isConflict(table, false, word.charAt(k), i, j + k)){
 					isValid = false;
 					break;
 				}
-				else if(table[i][j+k] == "-"){
+				else if(table[i][j + k] == "-"){
 					prevFlag = false;
 					atleastOne = true;
 				}
@@ -167,16 +168,16 @@ function attemptToInsert(rows, cols, table, weights, verticalCount, totalCount, 
 				}
 			}
 			
-			if((j-1) in table[i] && table[i][j-1] != "-"){
+			if((j - 1) in table[i] && table[i][j - 1] != "-"){
 				isValid = false;
 			}
-			else if((j+word.length) in table[i] && table[i][j+word.length] != "-"){
+			else if((j + word.length) in table[i] && table[i][j + word.length] != "-"){
 				isValid = false;
 			}
 			
 			if(isValid && atleastOne){
 				var tempScore1 = computeScore1(connections, word);
-				var tempScore2 = computeScore2(rows, cols, i, j + word.length/2, word);
+				var tempScore2 = computeScore2(rows, cols, i, j + (word.length / 2), word);
 				var tempScore3 = computeScore3(1, 0, verticalCount, totalCount);
 				var tempScore4 = computeScore4(rows, word);
 				var tempScore = weightedAverage(weights, [tempScore1, tempScore2, tempScore3, tempScore4]);
@@ -200,11 +201,11 @@ function attemptToInsert(rows, cols, table, weights, verticalCount, totalCount, 
 			var prevFlag = false;
 			
 			for(var k = 0; k < word.length; k++){
-				if(isConflict(table, true, word.charAt(k), i+k, j)){
+				if(isConflict(table, true, word.charAt(k), i + k, j)){
 					isValid = false;
 					break;
 				}
-				else if(table[i+k][j] == "-"){
+				else if(table[i + k][j] == "-"){
 					prevFlag = false;
 					atleastOne = true;
 				}
@@ -220,16 +221,16 @@ function attemptToInsert(rows, cols, table, weights, verticalCount, totalCount, 
 				}
 			}
 			
-			if((i-1) in table && table[i-1][j] != "-"){
+			if((i - 1) in table && table[i - 1][j] != "-"){
 				isValid = false;
 			}
-			else if((i+word.length) in table && table[i+word.length][j] != "-"){
+			else if((i + word.length) in table && table[i + word.length][j] != "-"){
 				isValid = false;
 			}
 			
 			if(isValid && atleastOne){
 				var tempScore1 = computeScore1(connections, word);
-				var tempScore2 = computeScore2(rows, cols, i + word.length/2, j, word);
+				var tempScore2 = computeScore2(rows, cols, i + (word.length / 2), j, word);
 				var tempScore3 = computeScore3(0, 1, verticalCount, totalCount);
 				var tempScore4 = computeScore4(rows, word);
 				var tempScore = weightedAverage(weights, [tempScore1, tempScore2, tempScore3, tempScore4]);
@@ -248,7 +249,7 @@ function attemptToInsert(rows, cols, table, weights, verticalCount, totalCount, 
 		return [bestScore, word, index, bestI, bestJ, bestO];
 	}
 	else{
-		return -1;
+		return [-1];
 	}
 }
 
@@ -258,18 +259,20 @@ function generateTable(rows, cols, words, weights){
 	var totalCount = 0;
 	var positions = {};
 	
-	for(index in words){
+	for(outerIndex in words){
 		var best = [-1];
-		for(index in words){
-			if("answer" in words[index] && !("startx" in words[index])){
-				var temp = attemptToInsert(rows, cols, table, weights, verticalCount, totalCount, words[index].answer, index);
-				if(temp != -1 && temp[0] > best[0]){
+		for(innerIndex in words){
+			if("answer" in words[innerIndex] && !("startx" in words[innerIndex])){
+				var temp = attemptToInsert(rows, cols, table, weights, verticalCount, totalCount, words[innerIndex].answer, innerIndex);
+				if(temp[0] > best[0]){
 					best = temp;
 				}
 			}
 		}
 		
-		if(best[0] == -1) break;
+		if(best[0] == -1){
+      break;
+    }
 		else{
 			addWord(best, words, table, positions);
 			if(best[5] == 1){
@@ -278,12 +281,18 @@ function generateTable(rows, cols, words, weights){
 			totalCount += 1;
 		}
 	}
+
+  for(index in words){
+    if(!("startx" in words[index])){
+      words[index].orientation = "none";
+    }
+  }
 	
-	return {"table":table, "result":words};
+	return {"table": table, "result": words};
 }
 
-function trimTable(struct){
-	var table = struct.table;
+function trimTable(data){
+	var table = data.table;
 	var rows = table.length;
 	var cols = table[0].length;
 
@@ -317,17 +326,19 @@ function trimTable(struct){
 	var trimmedTable = initTable(bottomMost - topMost + 1, rightMost - leftMost + 1);
 	for(var i = topMost; i < bottomMost + 1; i++){
 		for(var j = leftMost; j < rightMost + 1; j++){
-			trimmedTable[i-topMost][j-leftMost] = table[i][j];
+			trimmedTable[i - topMost][j - leftMost] = table[i][j];
 		}
 	}
 	
-	var words = struct.result;
+	var words = data.result;
 	for(entry in words){
-		words[entry].startx -= leftMost;
-		words[entry].starty -= topMost;
+    if("startx" in words[entry]) {
+		  words[entry].startx -= leftMost;
+		  words[entry].starty -= topMost;
+    }
 	}
 	
-	return {"table":trimmedTable, "result":words, "rows":rows, "cols":cols};
+	return {"table": trimmedTable, "result": words, "rows": rows, "cols": cols};
 }
 
 function tableToString(table, delim){
