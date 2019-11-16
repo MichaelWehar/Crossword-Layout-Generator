@@ -42,7 +42,26 @@ One can visualize the output as follows:
 ```
 
 # Demo Website
-- http://michaelwehar.com/crosswords
+
+The demo website's source code can be found in `index.html`.
+
+The demo website shows:
+
+- how to generate the crossword layout in a json format
+
+- how to generate the crossword layout in a plain text grid format (using HTML line breaks).
+
+- how to turn your crossword layout into a **word search** puzzle with horizontal and vertical answers.
+
+Link: http://michaelwehar.com/crosswords
+
+# Information for Advanced Users
+
+- The generated layouts don't always contain all of the input words.  If a word does not appear in the layout, then its orientation attribute will be set to "none".
+
+- The generated crossword layouts are not always connected.  Occasionally, there will be islands of disconnected words.
+
+- The program is efficient on small word lists, but it runs noticably slower when the list contains more than 100 words.
 
 # License
 - MIT
