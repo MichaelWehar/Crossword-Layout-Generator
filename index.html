@@ -44,12 +44,23 @@
 			var json_data = [];
 			for(i in word_list){
 				if(word_list[i].length > 0){
-					json_data[i] = {"answer": word_list[i]};
+					json_data[i] = {"answer": word_list[i].toLowerCase()};
 				}
 			}
 			
 			return json_data;
 		}
+
+    function create_word_search(alphabet, table){
+      var tableArray = table.split("");
+      for(var i = 0; i < tableArray.length; i++){
+        if(tableArray[i] == '-'){
+          var randomIndex = Math.floor(alphabet.length * Math.random());
+          tableArray[i] = alphabet[randomIndex];
+        }
+      }
+      return tableArray.join("");
+    }
 		
 		function button_clicked(){
 			// Input data
@@ -61,8 +72,12 @@
 			var output_json = layout.result;
 			var output_html = layout.table_string;
 			
+      // Word search data
+      var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+      var word_search = create_word_search(alphabet, output_html);
+
 			// Display result
-			document.getElementById("content").innerHTML = "<h3>Output JSON</h3><br>" + JSON.stringify(output_json) + "<br><br><h3>Output Html</h3><br>" + output_html + "<br>";
+			document.getElementById("content").innerHTML = "<h3>Output JSON</h3><br>" + JSON.stringify(output_json) + "<br><br><h3>Output Html</h3><br>" + output_html + "<br><h3>Extra Output: Word Search</h3><br>" + word_search + "<br>";
 		}
 		
 	</script>
