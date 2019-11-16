@@ -69,3 +69,9 @@ Link: http://michaelwehar.com/crosswords
 # Credits
 - Michael Wehar
 - Itay Livni
+
+# External Projects That Use Our Library
+
+- [WoordSchaap](https://github.com/erasche/woordschaap)
+
+- [Collaboration with TapNotion at PyCon 2018](https://pycon-archive.python.org/2018/schedule/presentation/179/)
