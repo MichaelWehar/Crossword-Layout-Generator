@@ -22,7 +22,7 @@
 		<h2>Enter a list of words below</h2><br><br>
 	
 		<textarea id="words" rows="9" cols="35" autofocus="autofocus" style="font-size: 16px;" placeholder="Enter words on separate lines..."></textarea><br><br><br><br>
-		<button onclick="button_clicked();" style="font-size: 14px;">Generate Layout</button><br><br><br>
+		<button onclick="button_clicked();" style="font-size: 14px; cursor: pointer;">Generate Layout</button><br><br><br>
 		
 		<div id="content" style="font-family: 'Courier New', Courier, monospace"></div><br>
 		<h3><a href="https://github.com/MichaelWehar/Crossword-Layout-Generator">View Source Code (MIT License)</a></h3><br><br>
@@ -65,20 +65,22 @@
 		function button_clicked(){
 			// Input data
 			var word_list = document.getElementById("words").value.replace(/[ \r\n,;:]+/g, ",").split(",");
-			var input_json = convert_to_json(word_list);
-			
-			// Output data
-			var layout = generateLayout(input_json);
-			var output_json = layout.result;
-			var output_html = layout.table_string;
-			
-      // Word search data
-      var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-      var word_search = create_word_search(alphabet, output_html);
+      if(word_list[0] != ""){
+			  var input_json = convert_to_json(word_list);
+			  
+			  // Output data
+			  var layout = generateLayout(input_json);
+			  var output_json = layout.result;
+			  var output_html = layout.table_string;
+			  
+        // Word search data
+        var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+        var word_search = create_word_search(alphabet, output_html);
 
-			// Display result
-			document.getElementById("content").innerHTML = "<h3>Output JSON</h3><br>" + JSON.stringify(output_json) + "<br><br><h3>Output Html</h3><br>" + output_html + "<br><h3>Extra Output: Word Search</h3><br>" + word_search + "<br>";
-		}
+			  // Display result
+			  document.getElementById("content").innerHTML = "<h3>Output JSON</h3><br>" + JSON.stringify(output_json) + "<br><br><h3>Output Html</h3><br>" + output_html + "<br><h3>Extra Output: Word Search</h3><br>" + word_search + "<br>";	
+      }
+    }
 		
 	</script>
 	
