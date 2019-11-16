@@ -1,9 +1,17 @@
 <html>
 <head>
-	<title>Crossword Layout Generator</title>
-	<meta name="description" content="An open source crossword layout generator.">
-    <meta name="author" content="Michael Wehar">
-	<script src="layout_generator.js"></script>
+  <title>Crossword Layout Generator</title>
+  <meta name="description" content="An open source crossword layout generator.">
+  <meta name="author" content="Michael Wehar">
+  <script src="layout_generator.js"></script>
+  <style>
+    div.footer{
+      width: 400px;
+      font-size: 15px;
+      color: #444444;
+      max-height: 99999999px;
+    }
+  </style>
 </head>
 
 <body>
@@ -11,13 +19,23 @@
 	<center>
 		<br>
 		<h1>Crossword Layout Generator</h1>
-		<h3>Enter a list of words below.</h3><br>
+		<h2>Enter a list of words below</h2><br><br>
 	
-		<textarea id="words" rows="9" cols="35"></textarea><br><br><br>
-		<button onclick="button_clicked();">Generate Layout</button><br><br><br>
+		<textarea id="words" rows="9" cols="35" autofocus="autofocus" style="font-size: 16px;" placeholder="Enter words on separate lines..."></textarea><br><br><br><br>
+		<button onclick="button_clicked();" style="font-size: 14px;">Generate Layout</button><br><br><br>
 		
-		<div id="content" style="width: 500px; font-family: 'Courier New', Courier, monospace"></div><br>
-		<h3>Visit us @ <a href="https://github.com/MichaelWehar/Crossword-Layout-Generator">GitHub</a></h3><br><br>
+		<div id="content" style="font-family: 'Courier New', Courier, monospace"></div><br>
+		<h3><a href="https://github.com/MichaelWehar/Crossword-Layout-Generator">View Source Code (MIT License)</a></h3><br><br>
+
+    <div class="footer">
+      <br><hr><br>
+      <center>
+        Related pages: <a href="https://WordofTheHour.org">Word of The Hour</a>, <a href="http://michaelwehar.com/spellchecker/">Spell Checker</a>
+        <br>
+        <p style="padding: 7px;">Created by: Michael Wehar.</p>
+        <br><br>
+      </center>
+    </div>
 	</center>
 
 	<script>
@@ -44,7 +62,7 @@
 			var output_html = layout.table_string;
 			
 			// Display result
-			document.getElementById("content").innerHTML = "<b>Output JSON</b><br><br>" + JSON.stringify(output_json) + "<br><br><b>Output Html</b><br><br>" + output_html;
+			document.getElementById("content").innerHTML = "<h3>Output JSON</h3><br>" + JSON.stringify(output_json) + "<br><br><h3>Output Html</h3><br>" + output_html + "<br>";
 		}
 		
 	</script>
