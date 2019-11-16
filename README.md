@@ -51,7 +51,7 @@ The demo website shows:
 
 - how to generate the crossword layout in a plain text grid format (using HTML line breaks).
 
-- how to turn your crossword layout into a **word search** puzzle with horizontal and vertical answers.
+- how to turn your crossword layout into a **word search puzzle** with horizontal and vertical answers.
 
 Link: http://michaelwehar.com/crosswords
 
