@@ -1,4 +1,5 @@
 # Crossword Layout Generator - Open Source
+## Introduction
 A crossword consists of clues, answers, and a layout:
 - The answers are the hidden words that the player is trying to guess.
 - Each answer has exactly one clue.  This clue is a sentence or phrase that helps the player to guess the associated answer.
@@ -6,7 +7,7 @@ A crossword consists of clues, answers, and a layout:
 
 This crossword layout generator takes in a list of answers and outputs a crossword layout.  Our program **does not** generate the answers or the clues.
 
-# Input and Output Format
+## Input and Output Format
 
 An input is a list of answers in a json format.  The clues can optionally be included with the input.
 
@@ -24,7 +25,7 @@ One can visualize the output as follows:
 
 ![Example Output](https://github.com/MichaelWehar/Crossword-Layout-Generator/blob/master/example_images/crossword1_filled.png)
 
-# Getting Started
+## Getting Started
 
 **Step 1:** Add the following line to the head of your html document:
 
@@ -41,7 +42,7 @@ One can visualize the output as follows:
 </script>
 ```
 
-# Demo Website
+## Demo Website
 
 The demo website's source code can be found in `index.html`.
 
@@ -55,7 +56,7 @@ The demo website shows:
 
 Link: http://michaelwehar.com/crosswords
 
-# Information for Advanced Users
+## Information for Advanced Users
 
 - The generated layouts don't always contain all of the input words.  If a word does not appear in the layout, then its orientation attribute will be set to "none".
 
@@ -63,14 +64,14 @@ Link: http://michaelwehar.com/crosswords
 
 - The program is efficient on small word lists, but it runs noticably slower when the list contains more than 100 words.
 
-# License
+## License
 - MIT
 
-# Credits
+## Credits
 - Michael Wehar
 - Itay Livni
 
-# External Projects That Use Our Library
+## External Projects That Use Our Library
 
 - [WoordSchaap](https://github.com/erasche/woordschaap)
 
