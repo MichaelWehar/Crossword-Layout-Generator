@@ -54,7 +54,7 @@ The demo website shows:
 
 - how to turn your crossword layout into a **word search puzzle** with horizontal and vertical answers.
 
-Link: http://michaelwehar.com/crosswords
+**Link:** http://michaelwehar.com/crosswords
 
 ## Information for Advanced Users
 
