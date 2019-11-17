@@ -2,14 +2,14 @@
 ## Introduction
 A crossword consists of clues, answers, and a layout:
 - The answers are the hidden words that the player is trying to guess.
-- Each answer has exactly one clue.  This clue is a sentence or phrase that helps the player to guess the associated answer.
-- The **crossword layout** describes where the answers are located in a two dimensional grid.
+- Each answer has a clue which is a sentence or phrase that helps the player to guess the associated answer.
+- The **crossword layout** describes where the answers are located in a two-dimensional grid.
 
 This crossword layout generator takes in a list of answers and outputs a crossword layout.  Our program **does not** generate the answers or the clues.
 
 ## Input and Output Format
 
-An input is a list of answers in a json format.  The clues can optionally be included with the input.
+An input is a list of answers in a JSON format.  The clues can optionally be included with the input.
 
 Here is an example input:
 
@@ -48,13 +48,13 @@ The demo website's source code can be found in `index.html`.
 
 The demo website shows:
 
-- how to generate the crossword layout in a json format
+- how to generate the crossword layout in a JSON format
 
 - how to generate the crossword layout in a plain text grid format (using HTML line breaks).
 
 - how to turn your crossword layout into a **word search puzzle** with horizontal and vertical answers.
 
-Link: http://michaelwehar.com/crosswords
+**Link:** http://michaelwehar.com/crosswords
 
 ## Information for Advanced Users
 
