@@ -9,7 +9,7 @@ This crossword layout generator takes in a list of answers and outputs a crosswo
 
 ## Input and Output Format
 
-An input is a list of answers in a json format.  The clues can optionally be included with the input.
+An input is a list of answers in a JSON format.  The clues can optionally be included with the input.
 
 Here is an example input:
 
@@ -48,7 +48,7 @@ The demo website's source code can be found in `index.html`.
 
 The demo website shows:
 
-- how to generate the crossword layout in a json format
+- how to generate the crossword layout in a JSON format
 
 - how to generate the crossword layout in a plain text grid format (using HTML line breaks).
 
