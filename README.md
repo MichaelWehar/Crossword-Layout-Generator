@@ -2,7 +2,7 @@
 ## Introduction
 A crossword consists of clues, answers, and a layout:
 - The answers are the hidden words that the player is trying to guess.
-- Each answer has exactly one clue.  This clue is a sentence or phrase that helps the player to guess the associated answer.
+- Each answer has a clue which is a sentence or phrase that helps the player to guess the associated answer.
 - The **crossword layout** describes where the answers are located in a two dimensional grid.
 
 This crossword layout generator takes in a list of answers and outputs a crossword layout.  Our program **does not** generate the answers or the clues.
