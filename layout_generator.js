@@ -441,7 +441,7 @@ function trimTable(data){
         }
     }
     
-    return {"table": trimmedTable, "result": words, "rows": rows, "cols": cols};
+    return {"table": trimmedTable, "result": words, "rows": Math.max(bottomMost - topMost + 1, 0), "cols": Math.max(rightMost - leftMost + 1, 0)};
 }
 
 function tableToString(table, delim){
