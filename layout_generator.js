@@ -266,8 +266,7 @@ function attemptToInsert(rows, cols, table, weights, verticalCount, totalCount, 
     }
 }
 
-function generateTable(rows, cols, words, weights){
-    var table = initTable(rows, cols);
+function generateTable(table, rows, cols, words, weights){
     var verticalCount = 0;
     var totalCount = 0;
     
@@ -463,8 +462,10 @@ function tableToString(table, delim){
 }
 
 function generateSimpleTable(words){
-    var dim = computeDimension(words, 3);
-    var table = generateTable(dim, dim, words, [0.7, 0.15, 0.1, 0.05]);
+    var rows = computeDimension(words, 3);
+    var cols = rows;
+    var blankTable = initTable(rows, cols);
+    var table = generateTable(blankTable, rows, cols, words, [0.7, 0.15, 0.1, 0.05]);
     var newTable = removeIsolatedWords(table);
     var finalTable = trimTable(newTable);
     assignPositions(finalTable.result);
