@@ -40,7 +40,7 @@ var layout = generateLayout(input_json);
 var rows = layout.rows;
 var cols = layout.cols;
 var table = layout.table; // table as two-dimensional array
-var output_html = layout.table_string; // table as plain text
+var output_html = layout.table_string; // table as plain text (with HTML line breaks)
 var output_json = layout.result; // words along with orientation, position, startx, and starty
 ...
 </script>
