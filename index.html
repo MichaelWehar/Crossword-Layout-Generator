@@ -65,7 +65,7 @@
 
     function button_clicked(){
         // Input data
-        var word_list = document.getElementById("words").value.replace(/[ \r\n,;:]+/g, ",").split(",");
+        var word_list = document.getElementById("words").value.replace(/[ \r\n,;:-]+/g, ",").split(",");
         if(word_list[0] != ""){
 	    var input_json = convert_to_json(word_list);
 	    
