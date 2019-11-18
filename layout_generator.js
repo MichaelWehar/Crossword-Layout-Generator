@@ -22,14 +22,17 @@ function weightedAverage(weights, values){
 
 
 // Component scores
+// 1. Number of connections
 function computeScore1(connections, word){
     return (connections / (word.length / 2));
 }
 
+// 2. Distance from center
 function computeScore2(rows, cols, i, j){
     return 1 - (distance(rows / 2, cols / 2, i, j) / ((rows / 2) + (cols / 2)));
 }
 
+// 3. Vertical versus horizontal orientation
 function computeScore3(a, b, verticalCount, totalCount){
     if(verticalCount > totalCount / 2){
 	return a;
@@ -42,13 +45,14 @@ function computeScore3(a, b, verticalCount, totalCount){
     }
 }
 
+// 4. Word length
 function computeScore4(val, word){
     return word.length / val;
 }
 
 
 // Word functions
-function addWord(best, words, table, positions){
+function addWord(best, words, table){
     var bestScore = best[0];
     var word = best[1];
     var index = best[2];
@@ -58,16 +62,6 @@ function addWord(best, words, table, positions){
     
     words[index].startx = bestJ + 1;			
     words[index].starty = bestI + 1;
-    
-    var tempStr = words[index].starty + "," + words[index].startx;
-    if(tempStr in positions){
-	words[index].position = positions[tempStr];
-    }
-    else{
-        // Object.keys is supported in ES5-compatible environments
-	positions[tempStr] = Object.keys(positions).length + 1;
-	words[index].position = positions[tempStr];
-    }
     
     if(bestO == 0){
 	for(var k = 0; k < word.length; k++){
@@ -82,6 +76,24 @@ function addWord(best, words, table, positions){
 	words[index].orientation = "down";
     }
     console.log(word + ", " + bestScore);
+}
+
+function assignPositions(words){
+    var positions = {};
+    for(index in words){
+        var word = words[index];
+        if(word.orientation != "none"){
+            var tempStr = word.starty + "," + word.startx;
+            if(tempStr in positions){
+	        word.position = positions[tempStr];
+            }
+            else{
+                // Object.keys is supported in ES5-compatible environments
+	        positions[tempStr] = Object.keys(positions).length + 1;
+	        word.position = positions[tempStr];
+            }
+        }
+    }
 }
 
 function computeDimension(words, factor){
@@ -129,8 +141,9 @@ function isConflict(table, isVertical, character, i, j){
     else if(table[i][j] == "-" && isVertical && (j - 1) in table[i] && table[i][j - 1] != "-"){
 	return true
     }
-    
-    return false;
+    else{
+        return false;
+    }
 }
 
 function attemptToInsert(rows, cols, table, weights, verticalCount, totalCount, word, index){
@@ -175,7 +188,7 @@ function attemptToInsert(rows, cols, table, weights, verticalCount, totalCount, 
 		isValid = false;
 	    }
 	    
-	    if(isValid && atleastOne){
+	    if(isValid && atleastOne && word.length > 1){
 		var tempScore1 = computeScore1(connections, word);
 		var tempScore2 = computeScore2(rows, cols, i, j + (word.length / 2), word);
 		var tempScore3 = computeScore3(1, 0, verticalCount, totalCount);
@@ -228,7 +241,7 @@ function attemptToInsert(rows, cols, table, weights, verticalCount, totalCount, 
 		isValid = false;
 	    }
 	    
-	    if(isValid && atleastOne){
+	    if(isValid && atleastOne && word.length > 1){
 		var tempScore1 = computeScore1(connections, word);
 		var tempScore2 = computeScore2(rows, cols, i + (word.length / 2), j, word);
 		var tempScore3 = computeScore3(0, 1, verticalCount, totalCount);
@@ -257,7 +270,6 @@ function generateTable(rows, cols, words, weights){
     var table = initTable(rows, cols);
     var verticalCount = 0;
     var totalCount = 0;
-    var positions = {};
     
     for(outerIndex in words){
 	var best = [-1];
@@ -274,7 +286,7 @@ function generateTable(rows, cols, words, weights){
             break;
         }
 	else{
-	    addWord(best, words, table, positions);
+	    addWord(best, words, table);
 	    if(best[5] == 1){
 		verticalCount += 1;
 	    }
@@ -289,6 +301,97 @@ function generateTable(rows, cols, words, weights){
     }
     
     return {"table": table, "result": words};
+}
+
+function removeIsolatedWords(data){
+    var oldTable = data.table;
+    var words = data.result;
+    var rows = oldTable.length;
+    var cols = oldTable[0].length;
+    var newTable = initTable(rows, cols);
+
+    // Draw intersections as "X"'s
+    for(wordIndex in words){
+        var word = words[wordIndex];
+        if(word.orientation == "across"){
+            var i = word.starty - 1;
+            var j = word.startx - 1;
+            for(var k = 0; k < word.answer.length; k++){
+                if(newTable[i][j + k] == "-"){
+                    newTable[i][j + k] = "O";
+                }
+                else if(newTable[i][j + k] == "O"){
+                    newTable[i][j + k] = "X";
+                }
+            }
+        }
+        else if(word.orientation == "down"){
+            var i = word.starty - 1;
+            var j = word.startx - 1;
+            for(var k = 0; k < word.answer.length; k++){
+                if(newTable[i + k][j] == "-"){
+                    newTable[i + k][j] = "O";
+                }
+                else if(newTable[i + k][j] == "O"){
+                    newTable[i + k][j] = "X";
+                }
+            }
+        }
+    }
+
+    // Set orientations to "none" if they have no intersections
+    for(wordIndex in words){
+        var word = words[wordIndex];
+        var isIsolated = true;
+        if(word.orientation == "across"){
+            var i = word.starty - 1;
+            var j = word.startx - 1;
+            for(var k = 0; k < word.answer.length; k++){
+                if(newTable[i][j + k] == "X"){
+                    isIsolated = false;
+                    break;
+                }
+            }
+        }
+        else if(word.orientation == "down"){
+            var i = word.starty - 1;
+            var j = word.startx - 1;
+            for(var k = 0; k < word.answer.length; k++){
+                if(newTable[i + k][j] == "X"){
+                    isIsolated = false;
+                    break;
+                }
+            }
+        }
+        if(word.orientation != "none" && isIsolated){
+            delete words[wordIndex].startx;
+            delete words[wordIndex].starty;
+            delete words[wordIndex].position;
+            words[wordIndex].orientation = "none";
+        }
+    }
+
+    // Draw new table
+    newTable = initTable(rows, cols);
+    for(wordIndex in words){
+        var word = words[wordIndex];
+        if(word.orientation == "across"){
+            var i = word.starty - 1;
+            var j = word.startx - 1;
+            for(var k = 0; k < word.answer.length; k++){
+                newTable[i][j + k] = word.answer.charAt(k);
+            }
+        }
+        else if(word.orientation == "down"){
+            var i = word.starty - 1;
+            var j = word.startx - 1;
+            for(var k = 0; k < word.answer.length; k++){
+                newTable[i + k][j] = word.answer.charAt(k);
+            }
+        }
+    }
+
+    return {"table": newTable, "result": words};
 }
 
 function trimTable(data){
@@ -343,23 +446,29 @@ function trimTable(data){
 
 function tableToString(table, delim){
     var rows = table.length;
-    var cols = table[0].length;
-
-    var output = "";
-    for(var i = 0; i < rows; i++){
-	for(var j = 0; j < cols; j++){
-	    output += table[i][j];
-	}
-	output += delim;
+    if(rows >= 1){
+        var cols = table[0].length;
+        var output = "";
+        for(var i = 0; i < rows; i++){
+	    for(var j = 0; j < cols; j++){
+	        output += table[i][j];
+	    }
+	    output += delim;
+        }
+        return output;
     }
-    
-    return output;
+    else{
+        return "";
+    }
 }
 
 function generateSimpleTable(words){
     var dim = computeDimension(words, 3);
     var table = generateTable(dim, dim, words, [0.7, 0.15, 0.1, 0.05]);
-    return trimTable(table);
+    var newTable = removeIsolatedWords(table);
+    var finalTable = trimTable(newTable);
+    assignPositions(finalTable.result);
+    return finalTable;
 }
 
 function generateLayout(words_json){
