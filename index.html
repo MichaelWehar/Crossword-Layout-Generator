@@ -1,92 +1,94 @@
 <html>
-<head>
-  <title>Crossword Layout Generator</title>
-  <meta name="description" content="An open source crossword layout generator.">
-  <meta name="author" content="Michael Wehar">
-  <script src="layout_generator.js"></script>
-  <style>
-    div.footer{
-      width: 400px;
-      font-size: 15px;
-      color: #444444;
-      max-height: 99999999px;
+  <head>
+    <title>Crossword Layout Generator</title>
+    <meta name="description" content="An open source crossword layout generator.">
+    <meta name="author" content="Michael Wehar">
+    <script src="layout_generator.js"></script>
+    <style>
+      div.footer{
+        width: 400px;
+        font-size: 15px;
+        color: #444444;
+        max-height: 99999999px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <center>
+      <br><br>
+      <h1>Crossword Layout Generator</h1>
+      <h2>Enter a list of words below</h2><br><br>
+      
+      <textarea id="words" rows="9" cols="35" autofocus="autofocus" style="font-size: 16px;" placeholder="Enter words on separate lines..."></textarea><br><br><br><br>
+      <button onclick="button_clicked();" style="font-size: 14px; cursor: pointer;">Generate Layout</button><br><br><br>
+      
+      <div id="content" style="font-family: 'Courier New', Courier, monospace"></div><br>
+
+      <h3><a href="https://github.com/MichaelWehar/Crossword-Layout-Generator">View Source Code (MIT License)</a><br><br><br>
+        <a href="https://projectboard.engineering.com/project/crossword-layout-generator---open-source">Short Article @ ProjectBoard</a></h3><br><br>
+
+      <div class="footer">
+        <br><hr><br>
+        <center>
+          Related pages: <a href="https://WordofTheHour.org">Word of The Hour</a>, <a href="http://michaelwehar.com/spellchecker/">Spell Checker</a>
+          <br>
+          <p style="padding: 7px;">Created by: Michael Wehar.</p>
+          <br><br>
+        </center>
+      </div>
+    </center>
+
+    <script>
+    function convert_to_json(word_list){
+        var json_data = [];
+        for(i in word_list){
+            if(word_list[i].length > 0){
+                json_data[i] = {"answer": word_list[i].toLowerCase()};
+            }
+        }
+        
+        return json_data;
     }
-  </style>
-</head>
-
-<body>
-
-	<center>
-		<br><br>
-		<h1>Crossword Layout Generator</h1>
-		<h2>Enter a list of words below</h2><br><br>
-	
-		<textarea id="words" rows="9" cols="35" autofocus="autofocus" style="font-size: 16px;" placeholder="Enter words on separate lines..."></textarea><br><br><br><br>
-		<button onclick="button_clicked();" style="font-size: 14px; cursor: pointer;">Generate Layout</button><br><br><br>
-		
-		<div id="content" style="font-family: 'Courier New', Courier, monospace"></div><br>
-
-		<h3><a href="https://github.com/MichaelWehar/Crossword-Layout-Generator">View Source Code (MIT License)</a><br><br><br>
-    <a href="https://projectboard.engineering.com/project/crossword-layout-generator---open-source">Short Article @ ProjectBoard</a></h3><br><br>
-
-    <div class="footer">
-      <br><hr><br>
-      <center>
-        Related pages: <a href="https://WordofTheHour.org">Word of The Hour</a>, <a href="http://michaelwehar.com/spellchecker/">Spell Checker</a>
-        <br>
-        <p style="padding: 7px;">Created by: Michael Wehar.</p>
-        <br><br>
-      </center>
-    </div>
-	</center>
-
-	<script>
-	
-		function convert_to_json(word_list){
-			var json_data = [];
-			for(i in word_list){
-				if(word_list[i].length > 0){
-					json_data[i] = {"answer": word_list[i].toLowerCase()};
-				}
-			}
-			
-			return json_data;
-		}
 
     function create_word_search(alphabet, table){
-      var tableArray = table.split("");
-      for(var i = 0; i < tableArray.length; i++){
-        if(tableArray[i] == '-'){
-          var randomIndex = Math.floor(alphabet.length * Math.random());
-          tableArray[i] = alphabet[randomIndex];
+        var tableArray = table.split("");
+        for(var i = 0; i < tableArray.length; i++){
+            if(tableArray[i] == '-'){
+                var randomIndex = Math.floor(alphabet.length * Math.random());
+                tableArray[i] = alphabet[randomIndex];
+            }
         }
-      }
-      return tableArray.join("");
+        return tableArray.join("");
     }
-		
-		function button_clicked(){
-			// Input data
-			var word_list = document.getElementById("words").value.replace(/[ \r\n,;:]+/g, ",").split(",");
-      if(word_list[0] != ""){
-			  var input_json = convert_to_json(word_list);
-			  
-			  // Output data
-			  var layout = generateLayout(input_json);
-			  var output_json = layout.result;
-			  var output_html = layout.table_string;
-			  
-        // Word search data
-        var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-        var word_search = create_word_search(alphabet, output_html);
 
-			  // Display result
-			  document.getElementById("content").innerHTML = "<h3>Output JSON</h3><br>" + JSON.stringify(output_json) + "<br><br><h3>Output Html</h3><br>" + output_html + "<br><h3>Extra Output: Word Search</h3><br>" + word_search + "<br>";	
-      }
+    function button_clicked(){
+        // Input data
+        var word_list = document.getElementById("words").value.replace(/[ \r\n,;:]+/g, ",").split(",");
+        if(word_list[0] != ""){
+	    var input_json = convert_to_json(word_list);
+	    
+	    // Output data
+            var layout = generateLayout(input_json);
+            var rows = layout.rows;
+            var cols = layout.cols;
+            var table = layout.table; // table as two-dimensional array
+            var output_html = layout.table_string; // table as plain text (with HTML line breaks)
+            var output_json = layout.result; // words along with orientation, position, startx, and starty
+	    
+            // Word search data
+            var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+            var word_search = create_word_search(alphabet, output_html);
+
+	    // Display result
+	    document.getElementById("content").innerHTML = "<h3>Output JSON</h3><br>" + JSON.stringify(output_json) + "<br><br><h3>Output Html</h3><br>" + output_html + "<br><h3>Extra Output: Word Search</h3><br>" + word_search + "<br>";	
+        }
     }
-		
-	</script>
-	
-	<br><br>
-	
-</body>
+
+    </script>
+    
+    <br><br>
+    
+  </body>
 </html>
