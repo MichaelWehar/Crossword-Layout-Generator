@@ -54,7 +54,9 @@ The demo website shows:
 
 - how to turn your crossword layout into a **word search puzzle** with horizontal and vertical answers.
 
-**Link:** http://michaelwehar.com/crosswords
+**Demo:** http://michaelwehar.com/crosswords
+
+**Short Article:** https://projectboard.engineering.com/project/crossword-layout-generator---open-source
 
 ## Information for Advanced Users
 
@@ -63,6 +65,8 @@ The demo website shows:
 - The generated crossword layouts are not always connected.  Occasionally, there will be islands of disconnected words.
 
 - The program is efficient on small word lists, but it runs noticably slower when the list contains more than 100 words.
+
+- We are still exploring potential ways to evaluate the quality of the generated crossword layouts.  See [Issue #2](https://github.com/MichaelWehar/Crossword-Layout-Generator/issues/2).
 
 ## License
 - MIT
