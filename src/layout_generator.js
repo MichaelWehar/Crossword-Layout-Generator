@@ -80,7 +80,7 @@ function addWord(best, words, table){
 
 function assignPositions(words){
     var positions = {};
-    for(index in words){
+    for(var index in words){
         var word = words[index];
         if(word.orientation != "none"){
             var tempStr = word.starty + "," + word.startx;
@@ -270,9 +270,9 @@ function generateTable(table, rows, cols, words, weights){
     var verticalCount = 0;
     var totalCount = 0;
     
-    for(outerIndex in words){
+    for(var outerIndex in words){
 	var best = [-1];
-	for(innerIndex in words){
+	for(var innerIndex in words){
 	    if("answer" in words[innerIndex] && !("startx" in words[innerIndex])){
 		var temp = attemptToInsert(rows, cols, table, weights, verticalCount, totalCount, words[innerIndex].answer, innerIndex);
 		if(temp[0] > best[0]){
@@ -293,7 +293,7 @@ function generateTable(table, rows, cols, words, weights){
 	}
     }
 
-    for(index in words){
+    for(var index in words){
         if(!("startx" in words[index])){
             words[index].orientation = "none";
         }
@@ -310,7 +310,7 @@ function removeIsolatedWords(data){
     var newTable = initTable(rows, cols);
 
     // Draw intersections as "X"'s
-    for(wordIndex in words){
+    for(var wordIndex in words){
         var word = words[wordIndex];
         if(word.orientation == "across"){
             var i = word.starty - 1;
@@ -339,7 +339,7 @@ function removeIsolatedWords(data){
     }
 
     // Set orientations to "none" if they have no intersections
-    for(wordIndex in words){
+    for(var wordIndex in words){
         var word = words[wordIndex];
         var isIsolated = true;
         if(word.orientation == "across"){
@@ -372,7 +372,7 @@ function removeIsolatedWords(data){
 
     // Draw new table
     newTable = initTable(rows, cols);
-    for(wordIndex in words){
+    for(var wordIndex in words){
         var word = words[wordIndex];
         if(word.orientation == "across"){
             var i = word.starty - 1;
@@ -433,7 +433,7 @@ function trimTable(data){
     }
     
     var words = data.result;
-    for(entry in words){
+    for(var entry in words){
         if("startx" in words[entry]) {
 	    words[entry].startx -= leftMost;
 	    words[entry].starty -= topMost;
@@ -472,7 +472,7 @@ function generateSimpleTable(words){
     return finalTable;
 }
 
-function generateLayout(words_json){
+export function generateLayout(words_json){
     var layout = generateSimpleTable(words_json);
     layout.table_string = tableToString(layout.table, "<br>");
     return layout;
