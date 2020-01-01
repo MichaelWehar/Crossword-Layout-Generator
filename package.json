@@ -1,0 +1,25 @@
+{
+  "name": "crossword-layout-generator",
+  "version": "0.1.0",
+  "description": "Converts a list of answers in a JSON format to a crossword layout.",
+  "main": "src/layout_generator.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MichaelWehar/Crossword-Layout-Generator.git"
+  },
+  "keywords": [
+    "crossword",
+    "generator",
+    "layout",
+    "json"
+  ],
+  "author": "Michael Wehar <mwehar1@swarthmore.edu>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MichaelWehar/Crossword-Layout-Generator/issues"
+  },
+  "homepage": "https://github.com/MichaelWehar/Crossword-Layout-Generator#readme"
+}
