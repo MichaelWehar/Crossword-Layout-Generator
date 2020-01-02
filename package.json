@@ -1,6 +1,6 @@
 {
   "name": "crossword-layout-generator",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Generates a crossword layout from any list of answers given in a JSON format.",
   "main": "src/layout_generator.js",
   "scripts": {
