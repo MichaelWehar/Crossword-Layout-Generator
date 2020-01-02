@@ -1,5 +1,5 @@
 // Author: Michael Wehar
-// Additional credits: Itay Livni
+// Additional credits: Itay Livni, Michael Blättler
 // MIT License
 
 // Math functions
@@ -9,7 +9,7 @@ function distance(x1, y1, x2, y2){
 
 function weightedAverage(weights, values){
     var temp = 0;
-    for(var k = 0; k < weights.length; k++){
+    for(let k = 0; k < weights.length; k++){
 	temp += weights[k] * values[k];
     }
     
@@ -64,13 +64,13 @@ function addWord(best, words, table){
     words[index].starty = bestI + 1;
     
     if(bestO == 0){
-	for(var k = 0; k < word.length; k++){
+	for(let k = 0; k < word.length; k++){
 	    table[bestI][bestJ + k] = word.charAt(k);
 	}
 	words[index].orientation = "across";
     }
     else{
-	for(var k = 0; k < word.length; k++){
+	for(let k = 0; k < word.length; k++){
 	    table[bestI + k][bestJ] = word.charAt(k);
 	}
 	words[index].orientation = "down";
@@ -80,7 +80,7 @@ function addWord(best, words, table){
 
 function assignPositions(words){
     var positions = {};
-    for(index in words){
+    for(let index in words){
         var word = words[index];
         if(word.orientation != "none"){
             var tempStr = word.starty + "," + word.startx;
@@ -98,7 +98,7 @@ function assignPositions(words){
 
 function computeDimension(words, factor){
     var temp = 0;
-    for(var i = 0; i < words.length; i++){
+    for(let i = 0; i < words.length; i++){
 	if(temp < words[i].answer.length){
 	    temp = words[i].answer.length;
 	}
@@ -111,8 +111,8 @@ function computeDimension(words, factor){
 // Table functions
 function initTable(rows, cols){
     var table = [];
-    for(var i = 0; i < rows; i++){
-	for(var j = 0; j < cols; j++){
+    for(let i = 0; i < rows; i++){
+	for(let j = 0; j < cols; j++){
 	    if(j == 0){
 		table[i] = ["-"];
 	    }
@@ -153,14 +153,14 @@ function attemptToInsert(rows, cols, table, weights, verticalCount, totalCount, 
     var bestScore = -1;
 
     // Horizontal
-    for(var i = 0; i < rows; i++){
-	for(var j = 0; j < cols - word.length + 1; j++){
+    for(let i = 0; i < rows; i++){
+	for(let j = 0; j < cols - word.length + 1; j++){
 	    var isValid = true;
 	    var atleastOne = false;
 	    var connections = 0;
 	    var prevFlag = false;
 	    
-	    for(var k = 0; k < word.length; k++){
+	    for(let k = 0; k < word.length; k++){
 		if(isConflict(table, false, word.charAt(k), i, j + k)){
 		    isValid = false;
 		    break;
@@ -206,14 +206,14 @@ function attemptToInsert(rows, cols, table, weights, verticalCount, totalCount, 
     }
     
     // Vertical
-    for(var i = 0; i < rows - word.length + 1; i++){
-	for(var j = 0; j < cols; j++){
+    for(let i = 0; i < rows - word.length + 1; i++){
+	for(let j = 0; j < cols; j++){
 	    var isValid = true;
 	    var atleastOne = false;
 	    var connections = 0;
 	    var prevFlag = false;
 	    
-	    for(var k = 0; k < word.length; k++){
+	    for(let k = 0; k < word.length; k++){
 		if(isConflict(table, true, word.charAt(k), i + k, j)){
 		    isValid = false;
 		    break;
@@ -270,9 +270,9 @@ function generateTable(table, rows, cols, words, weights){
     var verticalCount = 0;
     var totalCount = 0;
     
-    for(outerIndex in words){
+    for(let outerIndex in words){
 	var best = [-1];
-	for(innerIndex in words){
+	for(let innerIndex in words){
 	    if("answer" in words[innerIndex] && !("startx" in words[innerIndex])){
 		var temp = attemptToInsert(rows, cols, table, weights, verticalCount, totalCount, words[innerIndex].answer, innerIndex);
 		if(temp[0] > best[0]){
@@ -293,7 +293,7 @@ function generateTable(table, rows, cols, words, weights){
 	}
     }
 
-    for(index in words){
+    for(let index in words){
         if(!("startx" in words[index])){
             words[index].orientation = "none";
         }
@@ -310,12 +310,12 @@ function removeIsolatedWords(data){
     var newTable = initTable(rows, cols);
 
     // Draw intersections as "X"'s
-    for(wordIndex in words){
+    for(let wordIndex in words){
         var word = words[wordIndex];
         if(word.orientation == "across"){
             var i = word.starty - 1;
             var j = word.startx - 1;
-            for(var k = 0; k < word.answer.length; k++){
+            for(let k = 0; k < word.answer.length; k++){
                 if(newTable[i][j + k] == "-"){
                     newTable[i][j + k] = "O";
                 }
@@ -327,7 +327,7 @@ function removeIsolatedWords(data){
         else if(word.orientation == "down"){
             var i = word.starty - 1;
             var j = word.startx - 1;
-            for(var k = 0; k < word.answer.length; k++){
+            for(let k = 0; k < word.answer.length; k++){
                 if(newTable[i + k][j] == "-"){
                     newTable[i + k][j] = "O";
                 }
@@ -339,13 +339,13 @@ function removeIsolatedWords(data){
     }
 
     // Set orientations to "none" if they have no intersections
-    for(wordIndex in words){
+    for(let wordIndex in words){
         var word = words[wordIndex];
         var isIsolated = true;
         if(word.orientation == "across"){
             var i = word.starty - 1;
             var j = word.startx - 1;
-            for(var k = 0; k < word.answer.length; k++){
+            for(let k = 0; k < word.answer.length; k++){
                 if(newTable[i][j + k] == "X"){
                     isIsolated = false;
                     break;
@@ -355,7 +355,7 @@ function removeIsolatedWords(data){
         else if(word.orientation == "down"){
             var i = word.starty - 1;
             var j = word.startx - 1;
-            for(var k = 0; k < word.answer.length; k++){
+            for(let k = 0; k < word.answer.length; k++){
                 if(newTable[i + k][j] == "X"){
                     isIsolated = false;
                     break;
@@ -372,19 +372,19 @@ function removeIsolatedWords(data){
 
     // Draw new table
     newTable = initTable(rows, cols);
-    for(wordIndex in words){
+    for(let wordIndex in words){
         var word = words[wordIndex];
         if(word.orientation == "across"){
             var i = word.starty - 1;
             var j = word.startx - 1;
-            for(var k = 0; k < word.answer.length; k++){
+            for(let k = 0; k < word.answer.length; k++){
                 newTable[i][j + k] = word.answer.charAt(k);
             }
         }
         else if(word.orientation == "down"){
             var i = word.starty - 1;
             var j = word.startx - 1;
-            for(var k = 0; k < word.answer.length; k++){
+            for(let k = 0; k < word.answer.length; k++){
                 newTable[i + k][j] = word.answer.charAt(k);
             }
         }
@@ -403,8 +403,8 @@ function trimTable(data){
     var rightMost = -1;
     var bottomMost = -1;
     
-    for(var i = 0; i < rows; i++){
-	for(var j = 0; j < cols; j++){
+    for(let i = 0; i < rows; i++){
+	for(let j = 0; j < cols; j++){
 	    if(table[i][j] != "-"){
 		var x = j;
 		var y = i;
@@ -426,14 +426,14 @@ function trimTable(data){
     }
     
     var trimmedTable = initTable(bottomMost - topMost + 1, rightMost - leftMost + 1);
-    for(var i = topMost; i < bottomMost + 1; i++){
-	for(var j = leftMost; j < rightMost + 1; j++){
+    for(let i = topMost; i < bottomMost + 1; i++){
+	for(let j = leftMost; j < rightMost + 1; j++){
 	    trimmedTable[i - topMost][j - leftMost] = table[i][j];
 	}
     }
     
     var words = data.result;
-    for(entry in words){
+    for(let entry in words){
         if("startx" in words[entry]) {
 	    words[entry].startx -= leftMost;
 	    words[entry].starty -= topMost;
@@ -448,8 +448,8 @@ function tableToString(table, delim){
     if(rows >= 1){
         var cols = table[0].length;
         var output = "";
-        for(var i = 0; i < rows; i++){
-	    for(var j = 0; j < cols; j++){
+        for(let i = 0; i < rows; i++){
+	    for(let j = 0; j < cols; j++){
 	        output += table[i][j];
 	    }
 	    output += delim;
@@ -476,4 +476,9 @@ function generateLayout(words_json){
     var layout = generateSimpleTable(words_json);
     layout.table_string = tableToString(layout.table, "<br>");
     return layout;
+}
+
+// The following was added to support Node.js
+if(typeof module !== 'undefined'){
+    module.exports = { generateLayout };
 }

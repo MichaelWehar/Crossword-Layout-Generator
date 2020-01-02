@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>Crossword Layout Generator</title>
+    <meta charset="utf-8">
     <meta name="description" content="An open source crossword layout generator.">
     <meta name="author" content="Michael Wehar">
     <script src="layout_generator.js"></script>
@@ -43,7 +44,7 @@
     <script>
     function convert_to_json(word_list){
         var json_data = [];
-        for(i in word_list){
+        for(let i in word_list){
             if(word_list[i].length > 0){
                 json_data[i] = {"answer": word_list[i].toLowerCase()};
             }
@@ -54,7 +55,7 @@
 
     function create_word_search(alphabet, table){
         var tableArray = table.split("");
-        for(var i = 0; i < tableArray.length; i++){
+        for(let i = 0; i < tableArray.length; i++){
             if(tableArray[i] == '-'){
                 var randomIndex = Math.floor(alphabet.length * Math.random());
                 tableArray[i] = alphabet[randomIndex];
