@@ -27,46 +27,24 @@ One can visualize the output as follows:
 
 ## Getting Started
 
-### Install npm package
+**Step 1:** Install package using npm:
 
 ```sh
 npm install crossword-layout-generator
 ```
 
-In your js code use
+**Step 2:** You can add the following to your JavaScript application's code:
 
 ```js
-import { generateLayout } from "crossword-layout-generator";
-
-const layout = generateLayout(input_json);
-const rows = layout.rows;
-const cols = layout.cols;
-const table = layout.table; // table as two-dimensional array
-const output_html = layout.table_string; // table as plain text (with HTML line breaks)
-const output_json = layout.result; // words along with orientation, position, startx, and starty
-```
-
-### Use it in your HTML file using unpkg
-
-// TODO: Adjust unpkg import statement and update index.js
-
-**Step 1:** Add the following line to the head of your html document:
-
-`<script src="unpkg.com/crossword-layout-generator"></script>`
-
-**Step 2:** In the body of your html document, you can add the following JavaScript:
-
-```
-<script>
 ...
-var layout = generateLayout(input_json);
+var clg = require("crossword-layout-generator");
+var layout = clg.generateLayout(input_json);
 var rows = layout.rows;
 var cols = layout.cols;
 var table = layout.table; // table as two-dimensional array
 var output_html = layout.table_string; // table as plain text (with HTML line breaks)
 var output_json = layout.result; // words along with orientation, position, startx, and starty
 ...
-</script>
 ```
 
 ## Demo Website
