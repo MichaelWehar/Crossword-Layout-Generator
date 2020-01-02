@@ -80,6 +80,7 @@ The demo website shows:
 ## Credits
 - Michael Wehar
 - Itay Livni
+- Michael Blättler
 
 ## External Projects That Use Our Library
 
