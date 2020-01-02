@@ -46,7 +46,7 @@ var output_json = layout.result; // words along with orientation, position, star
 </script>
 ```
 
-**Update:** Our crossword layout generator is now available as a package for Node.js applications.  For more information, see here: https://www.npmjs.com/package/crossword-layout-generator
+**Update:** Our crossword layout generator is now available as a package for Node.js applications.  For more information, see our modified Node.js README here: https://www.npmjs.com/package/crossword-layout-generator
 
 ## Demo Website
 
