@@ -65,7 +65,7 @@ The demo website shows:
 
 **Demo:** http://michaelwehar.com/crosswords
 
-**Short Article:** https://projectboard.engineering.com/project/crossword-layout-generator---open-source
+**Short Article:** https://makeprojects.com/project/crossword-layout-generator---open-source
 
 ## Information for Advanced Users
 
