@@ -84,6 +84,10 @@ The demo website shows:
 - Itay Livni
 - Michael Blättler
 
+## Updates (December 2024)
+
+I also co-implemented an algorithm for automatic crossword puzzle filling.  Take a look at the new repository here @ [Automatic Crossword Puzzle Filling](https://github.com/MichaelWehar/Automatic-Crossword-Puzzle-Filling)
+
 ## External Projects That Use Our Library
 
 - [WoordSchaap](https://github.com/erasche/woordschaap)
