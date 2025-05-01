@@ -5,51 +5,258 @@
     <meta name="description" content="An open source crossword layout generator.">
     <meta name="author" content="Michael Wehar">
     <script src="layout_generator.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script src="html2pdf.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
-      div.footer{
-        width: 400px;
-        font-size: 15px;
-        color: #444444;
-        max-height: 99999999px;
+      :root {
+        --background-color: #ffffff;
+        --background-secondary: #dce1e6;
+        --text-color: #000000;
+        --text-secondary: #6c757d;
+        --input-text: #495057;
+        --border-color: #a9b0b7;
+        --bg-purple: #712cf9;
+        --bg-violet: #4c0bce;
+        --nav-text: #dee2e6;
+        --nav-title: #ffffff;
+      } 
+
+      .dark-mode {
+        --background-color: #212529;
+        --background-secondary: #343a40;
+        --text-color: #f8f9fa;
+        --text-secondary: #6c757d;
+        --input-text: #bcc0c4;
+        --border-color: #686d71;
+        --bg-purple: #6610f2;
+        --bg-violet: #4c0bce;
+        --nav-text: #dee2e6;
+        --nav-title: #ffffff;
+      }
+
+      .navbar {
+        background-color: var(--bg-purple);
+      }
+
+      .navbar-brand {
+        color: var(--nav-title);
+      }
+
+      .bi {
+        color: var(--nav-text);
+      }
+
+      body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+      }
+
+      .btn-primary {
+        background-color: var(--bg-purple);
+        border-color: var(--bg-purple);
+        color: var(--nav-title);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--bg-violet);
+        border-color: var(--bg-violet);
+        color: var(--nav-title);
+      }
+
+      .form-group label {
+        color: var(--text-secondary);
+      }
+
+      .form-control {
+        background-color: var(--background-secondary);
+        color: var(--input-text);
+        border-color: var(--border-color);
+      }
+
+      .form-control:focus {
+        background-color: var(--background-secondary);
+        color: var(--input-text);
+        border-color: var(--border-color);
+        box-shadow: 0px 0px 3px 3px var(--border-color); 
+      }
+
+      .form-control::placeholder {
+        color: var(--input-text);
+      }
+
+      h2, h3 {
+        color: var(--text-secondary);
+      }
+
+      .flex-equal {
+        flex: 1 1 0%;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem; 
+        padding: 1rem;
+      }
+
+      .footer {
+        background-color: var(--background-secondary);
+        color: var(--text-secondary);
+      }
+
+      #crossword-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        padding: 1rem;
+      }
+
+      #crossword-container > div {
+        flex: 1 1 300px;
+        box-sizing: border-box;
+      }
+
+      #clues-container button {
+        white-space: nowrap;
       }
     </style>
   </head>
 
   <body>
-
-    <center>
-      <br><br>
-      <h1>Crossword Layout Generator</h1>
-      <h2>Enter a list of words below</h2><br><br>
-
-      <textarea id="words" rows="9" cols="35" autofocus="autofocus" style="font-size: 16px;" placeholder="Enter words on separate lines..."></textarea><br><br><br><br>
-      <button onclick="button_clicked();" style="font-size: 14px; cursor: pointer;">Generate Layout</button><br><br><br>
-
-      <div id="content" style="font-family: 'Courier New', Courier, monospace"></div><br>
-
-      <h3><a href="https://github.com/MichaelWehar/Crossword-Layout-Generator">View Source Code (MIT License)</a><br><br><br>
-      <a href="https://makeprojects.com/project/crossword-layout-generator---open-source">Short Article @ ProjectBoard</a></h3><br><br>
-
-      <div class="footer">
-        <br><hr><br>
-        <center>
-          Related pages: <a href="https://WordofTheHour.org">Word of The Hour</a>, <a href="http://michaelwehar.com/spellchecker/">Spell Checker</a>
-          <br>
-          <p style="padding: 7px;">Created by: Michael Wehar.</p>
-          <br><br>
-        </center>
+    <nav class="navbar navbar-expand-lg">
+      <div class="container container-fluid">
+        <a class="navbar-brand" href="#">Crossword Layout Generator</a>
+        <div class="d-flex align-items-center">
+          <a href="https://github.com/nicholasyfu1/Crossword-Layout-Generator" target="_blank" class="nav-link me-3">
+            <i class="bi bi-github" style="font-size: 1.25rem;"></i>
+          </a>
+          <a href="https://makeprojects.com/project/crossword-layout-generator---open-source" target="_blank" class="nav-link me-3">
+            <i class="bi bi-file-text" style="font-size: 1.25rem;"></i>
+          </a>
+          <a href="https://www.npmjs.com/package/crossword-layout-generator" target="_blank" class="nav-link me-3">
+            <i class="bi bi-boxes" style="font-size: 1.25rem;"></i>
+          </a>
+          <div class="vr mx-2"></div>
+          <div class="d-flex align-items-center ms-3">
+            <div class="form-check form-switch m-0">
+              <input class="form-check-input" type="checkbox" id="theme-toggle" onclick="toggleTheme();">
+            </div>
+            <i class="bi bi-sun-fill" style="font-size: 1.25rem;"></i>
+          </div> 
+        </div>
       </div>
-    </center>
+    </nav>
+    <div class="container text-center">
+      <br>
+      <h1>Generate your own crossword puzzle</h1>
+      <h2>Enter a list of words on seperate lines</h2><br>
+
+      <textarea id="words" class="form-control" rows="6" cols="35" autofocus="autofocus" placeholder="Separate words and clues using ; and enter pairs on separate lines..."></textarea>
+      
+      <br><br>
+      
+      <div class="form-group" style="width: 150px;">
+        <label for="maxSizeInput">Maximum Grid Size</label>
+        <input
+          type="number"
+          class="form-control"
+          id="maxSizeInput"
+          value="16"
+          min="5"
+          max="50"
+        />
+      </div>
+      <br><br>
+      
+      <button id="generate-button" class="btn btn-primary" onclick="button_clicked();" style="font-size: 1.25rem;">Generate layout</button>
+      
+      <br><br>
+
+      <div id="crossword-container" style="display:none">
+        <div id="blank-html-crossword"></div><br>
+        <div id="clues-html"></div>
+      </div>
+
+      <br><br>
+
+      <div id="clues-container" style="display:none">
+        <h3>Check if a word is in the crossword</h3>
+        <div class="d-flex">
+          <input type="text" id="check-word" class="form-control me-2 flex-grow-1" placeholder="Enter a word">
+          <button onclick="playCrossword();" class="btn btn-secondary">Check word</button>   
+        </div>
+        <div id="word-check-result" style="font-size: 16px; margin-top: 10px;"></div>
+      </div>
+
+      <br><br>
+
+      <div id="filled-html-crossword"></div>
+      
+      <br><br>
+
+      <div id="controls-container" style="display:none">
+        <button onclick="downloadBlankPDF();" class="btn btn-secondary">Download Blank Crossword PDF</button>
+        <button onclick="downloadFilledPDF();" class="btn btn-secondary">Download Filled Crossword PDF</button>
+      </div>
+
+      <br><br>
+
+      <div id="extra-container" class="d-flex gap-2 gap-md-3" style="display:none">
+        <div class="flex-equal">
+          <h3>Output JSON</h3>
+          <div id="output-json" style="font-family: 'Courier New', Courier, monospace"></div>
+        </div>
+        <div class="flex-equal">
+          <h3>Output HTML</h3>
+          <div id="output-html" style="font-family: 'Courier New', Courier, monospace"></div>
+        </div>
+        <div class="flex-equal">
+          <h3>Word Search</h3>
+          <div id="word-search" style="font-family: 'Courier New', Courier, monospace"></div>
+        </div>
+      </div>
+
+      <br><br>
+    </div>
+
+    <div class="footer text-center">
+      <br>
+      Related pages: <a href="https://WordofTheHour.org">Word of The Hour</a>, <a href="http://michaelwehar.com/spellchecker/">Spell Checker</a>
+      <br>
+      <p>Created by: Michael Wehar</p>
+      <br>
+    </div>
 
     <script>
+
+      function toggleTheme() {
+        var checkbox = document.getElementById('theme-toggle');
+        var body = document.body;
+
+        if (checkbox.checked) {
+          body.classList.add('dark-mode');
+        } else {
+          body.classList.remove('dark-mode');
+        }
+      }
+
+      window.onload = function() {
+        var checkbox = document.getElementById('theme-toggle');
+        document.body.classList.add('dark-mode');
+        checkbox.checked = true;
+      }
+
       function convert_to_json(word_list){
         var json_data = [];
         for(let i in word_list){
-            if(word_list[i].length > 0){
-                json_data[i] = {"answer": word_list[i].toLowerCase()};
+            if(word_list[i].trim().length > 0){
+                var parts = word_list[i].split(";");
+                var clue = parts[1] ? parts[1].trim() : '';
+                json_data[i] = {"answer": parts[0].trim().toLowerCase(), "clue": clue};
             }
         }
-
         return json_data;
       }
 
@@ -63,32 +270,246 @@
         }
         return tableArray.join("");
       }
+      
+      /**
+       * Generates HTML table from layout.table as a 2D array.
+       */
+      function generate_html_table(table, output_json) {
+        var htmlText = '<table style="border-collapse: collapse; margin: 0 auto;">';
+        for (let i = 0; i < table.length; i++) {
+          htmlText += '<tr>';
+          for (let j = 0; j < table[i].length; j++) {
+            if (table[i][j] !== '-') { // If letter, add a white cell
+              var wordPosition = output_json.find(word => word.startx === j + 1 && word.starty === i + 1); // Find word that starts here
+              if (wordPosition) { // If word starts here, White cell with number
+                htmlText += `<td style="width: 30px; height: 30px; border: 1px solid black; background-color: white; position: relative;">
+                  <span style="position: absolute; top: 0; left: 0; font-size: 10px; color: black;">${wordPosition.position}</span></td>`;
+              } else { // Blank white cell
+                htmlText += '<td style="width: 30px; height: 30px; border: 1px solid black; background-color: white;"></td>';
+              }
+            } else { // If not letter, add a black cell
+              htmlText += '<td style="width: 30px; height: 30px; border: 1px solid black; background-color: black;"></td>';
+            }
+          }
+          htmlText += '</tr>';
+        }
+        htmlText += '</table>';
+        return htmlText;
+      }
 
-      function button_clicked(){
-        // Input data
-        var word_list = document.getElementById("words").value.replace(/[ \r\n,;:-]+/g, ",").split(",");
-        if(word_list[0] != ""){
-          var input_json = convert_to_json(word_list);
+      function generate_filled_crossword_table(table, output_json) {
+        var htmlText = '<table style="border-collapse: collapse; margin: 0 auto;">';
+        for (let i = 0; i < table.length; i++) {
+          htmlText += '<tr>';
+          for (let j = 0; j < table[i].length; j++) {
+            if (table[i][j] !== '-') { // If letter, add a white cell and display the letter
+              var wordPosition = output_json.find(word => word.startx === j + 1 && word.starty === i + 1); // Find word that starts here
+              if (wordPosition) { // If word starts here, White cell with number and letter
+                htmlText += `<td style="width: 30px; height: 30px; border: 1px solid black; background-color: white; color: black; text-align: center; vertical-align: middle; position: relative;">
+                  <span style="font-size: 16px;">${table[i][j]}</span>
+                  <span style="position: absolute; top: 0; left: 0; font-size: 10px; color: black;">${wordPosition.position}</span></td>`;
+              } else { // White cell with letter
+                htmlText += `<td style="width: 30px; height: 30px; border: 1px solid black; background-color: white; text-align: center; vertical-align: middle; color: black;">
+                  <span style="font-size: 16px;">${table[i][j]}</span></td>`;
+              }
+            } else { // If not letter, add a black cell
+              htmlText += '<td style="width: 30px; height: 30px; border: 1px solid black; background-color: black;"></td>';
+            }
+          }
+          htmlText += '</tr>';
+        }
+        htmlText += '</table>';
+        return htmlText;
+      }
 
-          // Output data
-          var layout = generateLayout(input_json);
-          var rows = layout.rows;
-          var cols = layout.cols;
-          var table = layout.table; // table as two-dimensional array
-          var output_html = layout.table_string; // table as plain text (with HTML line breaks)
-          var output_json = layout.result; // words along with orientation, position, startx, and starty
+      function generate_clues(clues) {
+        var htmlText = `<ul style="list-style-type: none; padding: 0;">`;
+        clues.forEach((item, index) => {
+          console.log(item)
+          if (item.clue && item.orientation != "none") {
+            const word = `word-${index}`;
+            htmlText += `
+              <li>
+                ${item.position}. ${item.clue} 
+                <button onclick="revealWord('${word}', '${item.answer}')" style="margin-left: 10px; font-size: 12px; cursor: pointer;">Reveal Word</button>
+                <span id="${word}" style="margin-left: 10px; font-weight: bold; display: none;"></span>
+              </li>`;
+          }
+        });
+        htmlText += `</ul>`;
+        return htmlText;
+      }
 
-          // Word search data
-          var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-          var word_search = create_word_search(alphabet, output_html);
+      async function generate_missing_clues(input_json) {
+        for (let i = 0; i < input_json.length; i++) {
+          document.getElementById("generate-button").innerText = `Loading... ${i + 1}/${input_json.length}`;
+          if (input_json[i].clue === '') {
+            let word = input_json[i].answer;
 
-          // Display result
-          document.getElementById("content").innerHTML = "<h3>Output JSON</h3><br>" + JSON.stringify(output_json) + "<br><br><h3>Output Html</h3><br>" + output_html + "<br><h3>Extra Output: Word Search</h3><br>" + word_search + "<br>";
+            try {
+              const response = await fetch('http://localhost:3000/generate-clue', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ word }),
+              });
+
+              const data = await response.json();
+
+              if (data.error) {
+                console.error(`Error generating clue for word "${word}": ${data.error}`);
+                input_json[i].clue = '[No clue available]';
+              } else {
+                input_json[i].clue = data.clue;
+              }
+            } catch (error) {
+              console.error(`Error generating clue for word "${word}": ${error}`);
+              input_json[i].clue = '[No clue available]';
+            }
+          }
         }
       }
+
+      async function button_clicked(){
+        // Disable the button and display "Loading..."
+        var button = document.getElementById("generate-button");
+        button.disabled = true;
+        button.textContent = "Loading...";
+        button.style.cursor = 'not-allowed';
+
+        try {
+          // Input data
+          var word_list = document.getElementById("words").value.split('\n');
+          if(word_list[0] != ""){
+            var input_json = convert_to_json(word_list);
+
+            await generate_missing_clues(input_json);
+            
+            var maxSizeInput = document.getElementById("maxSizeInput").value;
+            var maxSize = parseInt(maxSizeInput);
+
+            // Output data
+            var layout = generateLayout(input_json, maxSize);
+            var rows = layout.rows;
+            var cols = layout.cols;
+            var table = layout.table; // table as two-dimensional array
+            var output_html = layout.table_string; // table as plain text (with HTML line breaks)
+            var output_json = layout.result; // words along with orientation, position, startx, and starty
+
+            // Word search data
+            var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+            var word_search = create_word_search(alphabet, output_html);
+
+            // Generate crossword HTML
+            var crossword_html = generate_html_table(layout.table, output_json);
+
+            var filled_crossword_html = generate_filled_crossword_table(layout.table, output_json);
+
+            var clues_html = generate_clues(input_json);
+
+            // Display result
+            document.getElementById("output-json").innerHTML = "<br>" + JSON.stringify(output_json);
+            document.getElementById("output-html").innerHTML = "<br>" + output_html;
+            document.getElementById("word-search").innerHTML = "<br>" + word_search;
+            document.getElementById("blank-html-crossword").innerHTML = "<h3>Blank Crossword</h3><br>" + crossword_html;
+            document.getElementById("filled-html-crossword").innerHTML = "<h3>Filled Crossword</h3>" + filled_crossword_html;
+            document.getElementById("clues-html").innerHTML = "<h3>Clues</h3>" + clues_html;
+          }
+        } finally {
+          button.disabled = false;
+          button.textContent = "Generate Layout";
+          button.style.cursor = 'pointer';
+          document.getElementById("crossword-container").style.display = 'flex';
+          document.getElementById("clues-container").style.display = 'block';
+          document.getElementById("controls-container").style.display = 'block';
+          document.getElementById("extra-container").style.display = 'flex';
+        }
+      }
+
+      function playCrossword() { //need to check if word in corssword, not word list since not all words are in crossword
+        const wordGuess = document.getElementById("check-word").value.trim().toLowerCase();
+        const wordsInGame = document.getElementById("words").value.split('\n');
+        const crosswordData = convert_to_json(wordsInGame);
+
+        let isWordInCrossword = false;
+        for (let i=0; i<crosswordData.length; i++) {
+          if (crosswordData[i].answer == wordGuess) {
+            isWordInCrossword = true;
+            break;
+          }
+        }
+
+        const result = document.getElementById("word-check-result");
+        if (isWordInCrossword) {
+          result.textContent = `"${wordGuess}" is in the crossword.`;
+          result.style.color = "green";
+        }
+        else {
+          result.textContent = `"${wordGuess}" is NOT in the crossword.`;
+          result.style.color = "red";
+        }
+      }
+
+      function revealWord(word, answer) {
+        const wordSpan = document.getElementById(word);
+        wordSpan.textContent = answer.toUpperCase();
+        wordSpan.style.display = 'inline';
+      }
+
+      function downloadBlankPDF() {
+        // Create a temporary container to hold the combined content
+        const tempContainer = document.createElement("div");
+        tempContainer.id = "temp-pdf-container";
+        tempContainer.style.fontFamily = "'Courier New', Courier, monospace";
+
+        // Get the content of the blank crossword
+        const blankCrossword = document.getElementById("blank-html-crossword").innerHTML;
+
+        // Get the content of the clues
+        const clues = document.getElementById("clues-html").innerHTML;
+
+        // Combine both into the temporary container
+        tempContainer.innerHTML = `
+          ${blankCrossword}
+          <br>
+          ${clues}
+        `;
+
+        // Append the temporary container to the body (hidden)
+        document.body.appendChild(tempContainer);
+
+        // Define options for html2pdf
+        const options = {
+          margin: 1,
+          filename: 'blank_crossword_with_clues.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+        // Generate and download the PDF
+        html2pdf()
+          .set(options)
+          .from(tempContainer)
+          .save()
+          .then(() => {
+            // Clean up by removing the temporary container
+            document.body.removeChild(tempContainer);
+          });
+      }
+
+      function downloadFilledPDF() {
+        const element = document.getElementById('filled-html-crossword'); // Target the filled crossword
+        const options = {
+          margin: 1,
+          filename: 'Filled_Crossword.pdf',
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+        html2pdf().set(options).from(element).save();
+      }
     </script>
-
-    <br><br>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
 </html>

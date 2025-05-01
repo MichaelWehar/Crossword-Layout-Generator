@@ -96,7 +96,7 @@ function assignPositions(words){
   }
 }
 
-function computeDimension(words, factor){
+function computeDimension(words, factor, maxSize){
   var temp = 0;
   for(let i = 0; i < words.length; i++){
     if(temp < words[i].answer.length){
@@ -104,7 +104,7 @@ function computeDimension(words, factor){
     }
   }
 
-  return temp * factor;
+  return Math.min(temp * factor, maxSize);
 }
 
 
@@ -461,8 +461,8 @@ function tableToString(table, delim){
   }
 }
 
-function generateSimpleTable(words){
-  var rows = computeDimension(words, 3);
+function generateSimpleTable(words, maxSize){
+  var rows = computeDimension(words, 3, maxSize);
   var cols = rows;
   var blankTable = initTable(rows, cols);
   var table = generateTable(blankTable, rows, cols, words, [0.7, 0.15, 0.1, 0.05]);
@@ -472,8 +472,8 @@ function generateSimpleTable(words){
   return finalTable;
 }
 
-function generateLayout(words_json){
-  var layout = generateSimpleTable(words_json);
+function generateLayout(words_json, maxSize = 16){
+  var layout = generateSimpleTable(words_json, maxSize);
   layout.table_string = tableToString(layout.table, "<br>");
   return layout;
 }
